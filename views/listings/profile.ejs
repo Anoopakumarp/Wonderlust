@@ -1,0 +1,68 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container mt-5">
+  <h2>Welcome, <%= user.username %>!</h2>
+  <p>Email: <%= user.email %></p>
+
+  <!-- User's Bookings Section -->
+  <h3 class="mt-5">Your Bookings</h3>
+  <table class="table table-bordered mt-3">
+    <thead>
+      <tr>
+        <th>Hotel Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Payment Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (!bookings || bookings.length === 0) { %>
+      <tr>
+        <td colspan="5" class="text-center">No bookings yet.</td>
+      </tr>
+      <% } else { %> <% bookings.forEach(booking => { %>
+      <tr>
+        <td>
+          <%= booking.listing ? booking.listing.title : "Unknown Listing" %>
+        </td>
+        <td><%= booking.startDate.toDateString() %></td>
+        <td><%= booking.endDate.toDateString() %></td>
+        <td>
+          <% if (booking.paymentStatus === "Paid") { %>
+          <!-- {console.log(booking.paymentStatus )} -->
+          <span class="badge bg-success">Paid</span>
+          <% } else { %>
+          <span class="badge bg-success">paid</span>
+          <% } %>
+        </td>
+        <td>
+          <form
+            action="/booking/<%= booking._id %>?_method=DELETE"
+            method="POST"
+          >
+            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+          </form>
+        </td>
+      </tr>
+      <% }) %> <% } %>
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    font-weight: bold;
+  }
+  .bg-success {
+    background-color: #28a745;
+    color: white;
+  }
+  .bg-warning {
+    background-color: #ffc107;
+    color: black;
+  }
+</style>

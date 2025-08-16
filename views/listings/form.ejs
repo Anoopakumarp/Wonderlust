@@ -1,0 +1,183 @@
+<% layout("/layouts/boilerplate") %>
+
+    <body>
+        <h3>Create New ::</h3>
+        <div class="row ">
+            <div class="class col-9 col sm-4">
+
+
+                <form method="post" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+                    <div class="mt-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" name="listing[title]" placeholder="Enter the Title" class="form-control"
+                            required>
+                        <div class="invalid-feedback">Please Enter the Title</div>
+                        <div class="valid-feedback">Title looks good</div>
+                    </div>
+
+                    <div class="mt-3">
+                        <label for="description" class="form-label">description</label>
+                        <textarea name="listing[description]" placeholder="Enter the description" class="form-control"
+                            required> </textarea>
+                        <div class="invalid-feedback">Description should be valid</div>
+
+                    </div>
+                    <div class="mt-3">
+                        <label for="image" class="form-label">Upload Image</label>
+                        <input type="file" name="listing[image]"  class="form-control">
+
+                    </div>
+
+
+                    <div class="mt-3">
+                        <label for="price" class="form-label">price</label>
+                        <input type="text" name="listing[price]" placeholder="Enter the price" class="form-control"
+                            required>
+                        <div class="invalid-feedback">Price should be valid</div>
+
+                    </div>
+                    <div class="row mt-3">
+
+                        <div class="col-4">
+                            <label for="country" class="form-label">Country</label>
+                            <input type="text " name="listing[country]" placeholder="Enter the country"
+                                class="form-control" required>
+                            <div class="invalid-feedback">Country should be valid</div>
+
+                        </div>
+
+                        <div class="col-8 ">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" name="listing[location]" placeholder="Enter the Location"
+                                class="form-control" required>
+                            <div class="invalid-feedback">Location should be Valid</div>
+
+                        </div>
+                        
+                    <!-- <div class="mt-3">
+                        <label for="Category" class="form-label">Category</label>
+                        <input type="text" name="listing[category]" placeholder="Enter the Category" class="form-control"
+                            required>
+                        <div class="invalid-feedback">Category should be valid</div>
+
+                    </div> -->
+
+
+
+                    </div>
+                    <br>
+                    <div class="mb-3">
+
+                        <label for="category" class="form-label" style="font-size: 18px;" > Category </label>
+               
+                        <select name="listing[category]" class="form-select" required>
+               
+                           <option value="" disabled selected>Select a category</option>
+                           <option value="Trending">Trending</option>
+                           <option value="Bedrooms">Bedrooms</option>
+                           <option value="Iconic Cities">Iconic Cities</option>
+                           <option value="Mountains">Mountains</option>
+                           <option value="Castles">Castles</option>
+                           <option value="Amazing Pools">Amazing Pools</option>
+                           <option value="Camping">Camping</option>
+                           <option value="Farms">Farms</option>
+                           <option value="Artics">Artics</option>
+               
+                        </select>
+               
+                        <div class="invalid-feedback"> Please select a category </div>
+                    </div>
+               
+                     <!-- New Features Checkboxes -->
+                     <div class="mb-3">
+               
+                        <label class="form-label" style="font-size: 18px;"> Features </label>
+                        <div class="row">
+                          <!-- Left-side Features List -->
+                          <div class="col-md-6">
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" 
+                                     name="listing[features]" value="Free Parking" id="FreeParking">
+                              <label class="form-check-label" for="FreeParking"> Free Parking &nbsp;&nbsp;
+                               <i class="fa-solid fa-car"></i>
+                               </label>
+                              
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" 
+                                     name="listing[features]" value="WiFi" id="WiFi">
+                              <label class="form-check-label" for="WiFi"> WiFi &nbsp;&nbsp;<i class="fa-solid fa-wifi"></i>
+                              
+                              </label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" 
+                                     name="listing[features]" value="Hot Water" id="HotWater">
+                              <label class="form-check-label" for="HotWater"> Hot Water &nbsp;&nbsp;
+                               <i class="fa-solid fa-water"></i>
+                              </label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" 
+                                     name="listing[features]" value="24 hrs Electricity" id="Electricity">
+                              <label class="form-check-label" for="Electricity"> 24 hrs Electricity &nbsp;&nbsp;
+                               <i class="fa-solid fa-bolt"></i>
+                              </label>
+                            </div>
+               
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" 
+                                     name="listing[features]" value="Security Guard" id="SecurityGuard">
+                              <label class="form-check-label" for="SecurityGuard"> Security Guard &nbsp;&nbsp;
+                               <i class="fa-solid fa-person-military-pointing"></i>
+                              </label>
+                            </div>
+               
+                          </div>
+                
+                          <!-- Right-side Features List -->
+                          <div class="col-md-6">
+               
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" 
+                                     name="listing[features]" value="Balcony" id="Balcony">
+                              <label class="form-check-label" for="Balcony"> Balcony &nbsp;&nbsp;
+                               <i class="fa-brands fa-windows"></i>
+                              </label>
+                            </div>
+               
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" 
+                                     name="listing[features]" value="Kitchen" id="Kitchen">
+                              <label class="form-check-label" for="Kitchen"> Kitchen &nbsp;&nbsp;
+                               <i class="fa-solid fa-kitchen-set"></i> </label>
+                            </div>
+               
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" 
+                                     name="listing[features]" value="Gym" id="Gym">
+                              <label class="form-check-label" for="Gym"> Gym &nbsp;&nbsp;
+                               <i class="fa-solid fa-dumbbell"></i>
+                              </label>
+                            </div>
+               
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" 
+                                     name="listing[features]" value="Furniture" id="Furniture">
+                              <label class="form-check-label" for="Furniture"> Furniture &nbsp;&nbsp;
+                               <i class="fa-solid fa-chair"></i>
+                              </label>
+                            </div>
+               
+                           </div>
+               
+                       
+
+
+                    <button class="btn add-btn mt-4 ">Add</button>
+                </form>
+
+
+            </div>
+        </div>
+    </body>

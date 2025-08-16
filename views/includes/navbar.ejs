@@ -1,0 +1,96 @@
+<nav class="navbar navbar-expand-md bg-body-tertiary border-bottom sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/listings" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size: 2rem;color: red;font-weight: bold;"  >Villa Vista</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <!-- <a class="nav-link " aria-current="page" href="/">Home</a> -->
+        <a class="nav-link" href="/listings">Explore</a>
+
+      </div>
+      <div class="search-container position-relative">
+        <form class="d-flex align-items-center w-100" method="post" action="/search">
+            <div class="search-icon-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="search-icon feather feather-search">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </div>
+            <input class="form-control search-input ps-5 flex-grow-1" type="search" placeholder="Search anything..." 
+                   aria-label="Search" name="search">
+            <button class="btn btn-search ms-2" type="submit">Search</button>
+        </form>
+    
+    </div>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="/listings/new">airbnb your home</a>
+        
+        <% if(!currUser){ %>
+         
+          <a class="nav-link " aria-current="page" href="/signup"><b>Sign Up</b></a>
+          <a class="nav-link" href="/login"><b>Log In</b></a>
+          <% } %>
+            <% if(currUser){ %>
+              <a href="/profile" class="btn btn-outline-primary">Profile</a>
+              <a class="nav-link" href="/logout"><b>Log Out</b></a>
+              <% } %>
+      </div>
+    </div>
+    </div>
+  </div>
+</nav>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  
+
+  .search-container {
+    max-width: 500px; /* Limits max width on larger screens */
+    width: 100%;
+    margin: 0 auto; /* Centering */
+}
+
+.search-icon-container {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.search-input {
+    padding-left: 40px !important; /* Adjust for the icon */
+}
+
+.btn-search {
+    white-space: nowrap; /* Prevents text wrapping */
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+    .search-container {
+        max-width: 80%;
+       
+    }
+    
+    .search-input {
+        padding-left: 35px !important;
+    }
+
+    .btn-search {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+}
+    /* .search-icon {
+        color: #6c757d;
+        
+        left: 35px;
+        top: 50%;
+       
+    } */
+</style>

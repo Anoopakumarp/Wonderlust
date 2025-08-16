@@ -1,0 +1,560 @@
+<% layout("/layouts/boilerplate") %>
+  <script>
+    const mapToken = "<%=process.env.MAP_TOKEN%>"
+    const listing = <%- JSON.stringify(listing) %>;
+
+  </script>
+
+
+  <div class="row mt-3">
+    <div class="col-8 offset-2 ">
+      
+    </div>
+    <div class="col-6 offset-2 listing-card">
+      <div class="card listing-card">
+        <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="listing_image">
+        <div class="card-body">
+          <p class="card-text">
+            <b class="font-title">
+
+            </b>
+            <br><b>
+              <h4><%= listing.title %></h4>
+            </b> <br>
+
+          <p class="card-text">
+            Hosted By <%= listing.owner.username %>
+          </p>
+          <p class="card-text">
+            <%= listing.description %>
+          </p>
+          <p class="card-text"> &#8377 <%= listing.price%>
+          </p>
+          <p class="card-text">
+            <%= listing.location %>
+          </p>
+          <p class="card-text">
+            <%= listing.country %>
+          </p>
+          </p>
+        </div>
+      </div>
+      <% if (currUser && listing.owner._id.equals(currUser._id)) { %>
+        <div class="btns">
+          <!-- Edit Button -->
+          <a href="/listings/<%= listing._id %>/edit">
+            <button class="btn add-btn btn-dark offset-1">Edit</button>
+          </a>
+
+          <!-- Delete Form -->
+          <form method="post" action="/listings/<%= listing._id %>?_method=DELETE">
+            <button class="btn btn-dark offset-4">Delete</button>
+          </form>
+        </div>
+        <% } %>
+        <% if (!currUser) { %>
+          <a href="/login" class="btn btn-primary">Book Now</a>
+         
+      <% } else { %>
+       <button id="bookNowBtn" style="background-color: green; color: white; padding: 10px 20px; border: none; border-radius: 5px; margin-top: 20px;">
+    Book Now
+</button>
+
+      <% } %>
+
+      <h6 class="mt-3">Features:</h6>
+       <div class="row ">
+       <!-- Left column -->
+       <div class="col-6 ">
+       <ul style="list-style-type: none;">
+       <% listing.features.slice(0, Math.ceil(listing.features.length / 2)).forEach(function(feature) { %>
+        <li>
+          <% if (feature === "Free Parking") { %>
+            <i class="fa-solid fa-car"></i>
+          <% } else if (feature === "WiFi") { %>
+            <i class="fa-solid fa-wifi"></i>
+          <% } else if (feature === "Hot Water") { %>
+            <i class="fa-solid fa-tint"></i>
+          <% } else if (feature === "24 hrs Electricity") { %>
+            <i class="fa-solid fa-bolt"></i>
+          <% } else if (feature === "Security Guard") { %>
+            <i class="fa-solid fa-shield-halved"></i>
+          <% } else if (feature === "Balcony") { %>
+            <i class="fa-solid fa-tree"></i>
+          <% } else if (feature === "Kitchen") { %>
+            <i class="fa-solid fa-utensils"></i>
+          <% } else if (feature === "Gym") { %>
+            <i class="fa-solid fa-dumbbell"></i>
+          <% } else if (feature === "Furniture") { %>
+            <i class="fa-solid fa-couch"></i>
+          <% } %>
+          <span>&nbsp;&nbsp;&nbsp;&nbsp;<%= feature %></span>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+
+  <!-- Right column -->
+  <div class="col-6">
+    <ul style="list-style-type: none;">
+      <% listing.features.slice(Math.ceil(listing.features.length / 2)).forEach(function(feature) { %>
+        <li>
+          <% if (feature === "Free Parking") { %>
+            <i class="fa-solid fa-car"></i>
+          <% } else if (feature === "WiFi") { %>
+            <i class="fa-solid fa-wifi"></i>
+          <% } else if (feature === "Hot Water") { %>
+            <i class="fa-solid fa-tint"></i>
+          <% } else if (feature === "24 hrs Electricity") { %>
+            <i class="fa-solid fa-bolt"></i>
+          <% } else if (feature === "Security Guard") { %>
+            <i class="fa-solid fa-shield-halved"></i>
+          <% } else if (feature === "Balcony") { %>
+            <i class="fa-solid fa-tree"></i>
+          <% } else if (feature === "Kitchen") { %>
+            <i class="fa-solid fa-utensils"></i>
+          <% } else if (feature === "Gym") { %>
+            <i class="fa-solid fa-dumbbell"></i>
+          <% } else if (feature === "Furniture") { %>
+            <i class="fa-solid fa-couch"></i>
+          <% } %>
+         <span> &nbsp;&nbsp;&nbsp;&nbsp;<%= feature %></span>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</div>
+      
+    
+<!-- 
+      <div id="reserveModal" class="reserve-modal" style="display: none;">
+        <div class="reserve-modal-content">
+            <span class="reserve-close" onclick="closeReserveModal()">&times;</span>
+            <h3>Reserve Your Stay</h3>
+            <form action="/booking/<%= listing._id %>" method="POST" class="reserve-form">
+                <label for="checkIn">Check-In Date:</label>
+                <input type="date" id="checkIn" name="startDate" class="reserve-input" required>
+      
+                <label for="checkOut">Check-Out Date:</label>
+                <input type="date" id="checkOut" name="endDate" class="reserve-input" required>
+      
+                <button type="submit" class="reserve-btn">Confirm Reservation</button>
+            </form>
+        </div>
+      </div>
+      
+   
+      <style>
+      /* Main "Book Now" Button */
+      .open-modal-btn {
+        background-color: #007bff;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s ease-in-out;
+      }
+      
+      .open-modal-btn:hover {
+        background-color: #0056b3;
+      }
+      
+      /* Reserve Modal Wrapper (Initially Hidden) */
+      .reserve-modal {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      /* Reserve Modal Content */
+      .reserve-modal-content {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 12px;
+        width: 420px;
+        max-width: 90%;
+        text-align: center;
+        position: relative;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      }
+      
+      /* Close Button */
+      .reserve-close {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        font-size: 26px;
+        cursor: pointer;
+        color: #333;
+      }
+      
+      /* Form Styling */
+      .reserve-form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      
+      .reserve-form label {
+        font-weight: 600;
+        text-align: left;
+        display: block;
+        margin-bottom: 6px;
+        color: #444;
+      }
+      
+      /* Input Fields */
+      .reserve-input {
+        padding: 10px;
+        border: 2px solid #ced4da;
+        border-radius: 8px;
+        font-size: 16px;
+        background-color: #fff;
+        transition: border 0.3s ease-in-out;
+      }
+      
+      .reserve-input:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+      
+      /* Confirm Booking Button */
+      .reserve-btn {
+        background-color: #28a745;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s ease-in-out;
+      }
+      
+      .reserve-btn:hover {
+        background-color: #218838;
+      }
+      </style>
+
+<button id="pay-btn">Pay Now</button>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    document.getElementById("pay-btn").onclick = async function () {
+      try {
+        // Create order
+        const orderRes = await fetch("/payment/order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount: <%= listing.price %> }) // amount in INR
+        });
+        const orderData = await orderRes.json();
+
+        // Open Razorpay checkout
+        const options = {
+          key: "<%= process.env.RAZORPAY_KEY_ID %>", // test key
+          amount: orderData.amount,
+          currency: orderData.currency,
+          name: "Villa Vista",
+          description: "Test Transaction",
+          order_id: orderData.id,
+          handler: async function (response) {
+            // Verify payment
+            await fetch("/payment/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(response)
+            });
+            window.location.href = "/payment/success"; // optional redirect
+          },
+          theme: { color: "#3399cc" }
+        };
+        const rzp1 = new Razorpay(options);
+        rzp1.open();
+      } catch (err) {
+        console.error(err);
+      }
+    };
+  </script>
+
+ -->
+
+ 
+<style>
+#bookNowBtn {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#bookNowBtn:hover {
+    background-color: #006400; /* darker green on hover */
+}
+</style>
+
+
+<!-- <button id="bookNowBtn">Book Now</button> -->
+
+<!-- 
+ <button id="bookNowBtn">Book Now</button> -->
+
+    <!-- Reservation Modal -->
+ <!-- Reservation Modal -->
+<div id="reservationModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:1000;">
+    <div style="background:white; padding:20px; max-width:450px; margin:100px auto; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.3);">
+        <h2 style="margin-bottom:10px;">Confirm Your Stay</h2>
+        <p style="margin-bottom:20px; color:gray;">Please select your check-in and check-out dates.</p>
+
+        <form id="reserveForm" style="display:flex; flex-direction:column; gap:12px;">
+            <div>
+                <label>Check-In Date:</label>
+                <input type="date" id="checkIn" name="startDate" required style="width:100%; padding:8px; border:1px solid #ccc; border-radius:6px;">
+            </div>
+
+            <div>
+                <label>Check-Out Date:</label>
+                <input type="date" id="checkOut" name="endDate" required style="width:100%; padding:8px; border:1px solid #ccc; border-radius:6px;">
+            </div>
+
+            <div style="background:#f9f9f9; padding:12px; border-radius:8px; border:1px solid #eee;">
+                <p>Price per night: <strong>₹<%= listing.price %></strong></p>
+                <p id="totalPrice">Total: ₹0</p>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; gap:10px;">
+                <button type="submit" style="flex:1; background:#3399cc; color:white; padding:10px; border:none; border-radius:6px; cursor:pointer;">Confirm & Pay</button>
+                <button type="button" id="closeModal" style="flex:1; background:#ccc; padding:10px; border:none; border-radius:6px; cursor:pointer;">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+  const checkInInput = document.getElementById("checkIn");
+  const checkOutInput = document.getElementById("checkOut");
+  const totalPriceEl = document.getElementById("totalPrice");
+  const pricePerNight = <%= listing.price %>; // Price from your listing
+
+  function calculateTotal() {
+    const checkInDate = new Date(checkInInput.value);
+    const checkOutDate = new Date(checkOutInput.value);
+
+    if (checkInDate && checkOutDate && checkOutDate > checkInDate) {
+      // Calculate difference in milliseconds
+      const diffTime = checkOutDate - checkInDate;
+      // Convert to number of nights
+      const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const total = nights * pricePerNight;
+      totalPriceEl.innerHTML = `Total (${nights} night${nights > 1 ? "s" : ""}): ₹${total}`;
+    } else {
+      totalPriceEl.innerHTML = `Total: ₹0`;
+    }
+  }
+
+  checkInInput.addEventListener("change", calculateTotal);
+  checkOutInput.addEventListener("change", calculateTotal);
+</script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        // Show modal
+        document.getElementById("bookNowBtn").onclick = () => {
+            document.getElementById("reservationModal").style.display = "block";
+        };
+
+        // Close modal
+        document.getElementById("closeModal").onclick = () => {
+            document.getElementById("reservationModal").style.display = "none";
+        };
+
+        // Handle reservation + payment
+        document.getElementById("reserveForm").onsubmit = async function (e) {
+            e.preventDefault();
+
+            const checkIn = document.getElementById("checkIn").value;
+            const checkOut = document.getElementById("checkOut").value;
+
+            if (!checkIn || !checkOut) {
+                alert("Please select both dates.");
+                return;
+            }
+
+            try {
+                // 1️⃣ Create Razorpay order
+                const orderRes = await fetch("/payment/order", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ amount: <%= listing.price %> }) // INR amount
+                });
+                const orderData = await orderRes.json();
+
+                // 2️⃣ Open Razorpay Checkout
+                const options = {
+                    key: "<%= process.env.RAZORPAY_KEY_ID %>", // From .env
+                    amount: orderData.amount,
+                    currency: orderData.currency,
+                    name: "Villa Vista",
+                    description: "Booking Payment",
+                    order_id: orderData.id,
+                    handler: async function (response) {
+                        // 3️⃣ Verify payment
+                        await fetch("/payment/verify", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(response)
+                        });
+
+                        
+
+                        // 4️⃣ Submit booking after payment
+                        const form = document.createElement("form");
+                        form.method = "POST";
+                        form.action = "/booking/<%= listing._id %>";
+
+                        const startInput = document.createElement("input");
+                        startInput.type = "hidden";
+                        startInput.name = "startDate";
+                        startInput.value = checkIn;
+
+                        const endInput = document.createElement("input");
+                        endInput.type = "hidden";
+                        endInput.name = "endDate";
+                        endInput.value = checkOut;
+
+                        form.appendChild(startInput);
+                        form.appendChild(endInput);
+                        document.body.appendChild(form);
+                        form.submit();
+                    },
+                    theme: { color: "#3399cc" }
+                };
+
+                const rzp1 = new Razorpay(options);
+                rzp1.open();
+            } catch (err) {
+                console.error(err);
+                alert("Payment failed. Please try again.");
+            }
+        };
+    </script>
+
+
+      
+      <!-- JavaScript -->
+      <script>
+        // Open the modal when "Book Now" is clicked
+        function openReserveModal() {
+            let modal = document.getElementById("reserveModal");
+            modal.style.display = "flex";  // Show the modal
+            document.body.style.overflow = "hidden"; // Prevent scrolling when modal is open
+        }
+      
+        // Close the modal when clicking the close button
+        function closeReserveModal() {
+            let modal = document.getElementById("reserveModal");
+            modal.style.display = "none";  // Hide the modal
+            document.body.style.overflow = "auto"; // Restore scrolling
+        }
+      
+        // Close modal if clicking outside the modal content
+        window.onclick = function(event) {
+            let modal = document.getElementById("reserveModal");
+            if (event.target === modal) {
+                closeReserveModal();
+            }
+        };
+      
+        // Close modal when pressing "Esc" key
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Escape") {
+                closeReserveModal();
+            }
+        });
+      </script>
+      
+    </div>
+    <div class="col-8 offset-2 mt-3 mb-3">
+      <hr>
+      <% if (currUser) { %>
+
+        <h3>Leave a Review</h3>
+        <div class="mt-3 mb-3">
+          <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation">
+            <label for="rating" class="form-label">Rating</label>
+            <fieldset class="starability-slot">
+              <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked
+                aria-label="No rating." />
+              <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+              <label for="first-rate1" title="Terrible">1 star</label>
+              <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+              <label for="first-rate2" title="Not good">2 stars</label>
+              <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+              <label for="first-rate3" title="Average">3 stars</label>
+              <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+              <label for="first-rate4" title="Very good">4 stars</label>
+              <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+              <label for="first-rate5" title="Amazing">5 stars</label>
+            </fieldset>
+        </div>
+        <div class="mt-3 mb-3">
+          <label for="comment" class="form-label">Comment</label>
+          <textarea id="comment" rows="10" cols="30" class="form-control" name="review[Comment]" required></textarea>
+          <div class="invalid-feedback">Please add some comment</div>
+        </div>
+        <button class="btn btn-outline-danger mt-3">Submit</button>
+
+        </form>
+
+        <hr>
+        <% } %>
+          <% if(listing.reviews.length>0) { %>
+            <h4>All Reviews</h4>
+            <% } %>
+
+              <div class="row">
+
+                <% for(review of listing.reviews) { %>
+                  <div class="card col-5 mb-3 ms-3 ">
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        @<%= review.author.username %>
+                      </h5>
+                      </p>
+
+                      <p class="starability-result card-text" data-rating=<%=review.rating %>>
+
+                      </p>
+                      <p class="card-text">
+                        <%= review.Comment %>
+
+                    </div>
+                    <% if (currUser) { %>
+                      <form method="POST" action="/listings/<%= listing._id %>/reviews/<%=review._id %>?_method=DELETE">
+                        <button class="btn btn-dark mb-3 mt-3">Delete</button>
+                      </form>
+                      <% } %>
+                  </div>
+
+                  <% } %>
+              </div>
+    </div>
+    <div class=" offset-2  mb-3">
+      <h3>Where You will be</h3>
+      <div id="map"></div>
+    </div>
+  </div>
+
+
+
+  <script src="/js/map.js"></script>
